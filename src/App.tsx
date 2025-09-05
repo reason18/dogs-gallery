@@ -2,19 +2,16 @@ import CssBaseline from "@mui/material/CssBaseline";
 import {
   AppBar,
   Box,
-  Button,
   Card,
   CardContent,
   CardMedia,
   colors,
-  Grid,
   Stack,
   Toolbar,
   Typography,
 } from "@mui/material";
-import { useFetch } from "./hooks/useFetch";
-import { useEffect, useMemo } from "react";
-import { getBreedName } from "./utils";
+import { useEffect, useMemo, useState } from "react";
+import { fetchData, getBreedName } from "./utils";
 
 type RandomDogResponse = {
   message: string;
@@ -27,16 +24,38 @@ type RandomDogListResponse = {
 };
 
 function App() {
-  const { data, loading } = useFetch<RandomDogResponse>(
-    "https://dog.ceo/api/breeds/image/random"
-  );
+  const [loading, setLoading] = useState(false);
+  const [mainBread, setMainBread] = useState<string>();
+  const [breadList, setBreadList] = useState<string[]>([]);
+
+  useEffect(() => {
+    setLoading(true);
+    fetchData<RandomDogResponse>("https://dog.ceo/api/breeds/image/random")
+      .then((data) => {
+        data && setMainBread(data.message);
+        return data;
+      })
+      .finally(() => setLoading(false));
+  }, []);
+
+  useEffect(() => {
+    setLoading(true);
+    fetchData<RandomDogListResponse>(
+      "https://dog.ceo/api/breeds/image/random/10"
+    )
+      .then((data) => {
+        data && setBreadList(data.message);
+        return data;
+      })
+      .finally(() => setLoading(false));
+  }, []);
 
   const breadName = useMemo(() => {
-    if (data) {
-      return getBreedName(data.message);
+    if (mainBread) {
+      return getBreedName(mainBread);
     }
     return "";
-  }, [data]);
+  }, [mainBread]);
 
   return (
     <Box width="100%" height="100%" sx={{ backgroundColor: colors.grey[100] }}>
@@ -44,33 +63,46 @@ function App() {
       <Box>
         <AppBar position="static" variant="elevation" color="success">
           <Toolbar>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            <Typography variant="h6" component="div">
               Dog Gallery
             </Typography>
           </Toolbar>
         </AppBar>
         <Box>
-          <Box>
-            <Card raised sx={{ maxWidth: 600, mx: "auto", mt: "3rem" }}>
-              <CardMedia
-                component="img"
-                height="400"
-                image={data?.message}
-                alt={breadName + " image"}
-              />
-              <CardContent sx={{ pb: "1rem" }}>
-                <Typography variant="h5" component="div">
-                  {breadName}
-                </Typography>
-              </CardContent>
+          <Box sx={{ maxWidth: 816, mx: "auto", mt: "3rem" }}>
+            <Card raised>
+              {loading ? (
+                "Loading..."
+              ) : (
+                <>
+                  <CardMedia
+                    component="img"
+                    height="400"
+                    image={`${mainBread}?w=600&h=400&fit=crop&auto=format`}
+                    alt={breadName + " image"}
+                  />
+                  <CardContent sx={{ pb: "1rem" }}>
+                    <Typography variant="h5" component="div">
+                      {breadName}
+                    </Typography>
+                    <Stack direction="row" spacing={2}>
+                      {breadList.map((el) => (
+                        <span key={el} onClick={() => setMainBread(el)}>
+                          <img
+                            width="64px"
+                            height="64px"
+                            srcSet={`${el}?w=64&h=64&fit=crop&auto=format&dpr=2 2x`}
+                            src={`${el}?w=64&h=64&fit=crop&auto=format`}
+                            alt={el}
+                            loading="lazy"
+                          />
+                        </span>
+                      ))}
+                    </Stack>
+                  </CardContent>
+                </>
+              )}
             </Card>
-          </Box>
-          <Box>
-            <Stack direction="row" spacing={2}>
-              <Box>Item 1</Box>
-              <Box>Item 2</Box>
-              <Box>Item 3</Box>
-            </Stack>
           </Box>
         </Box>
       </Box>

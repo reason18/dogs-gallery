@@ -21,3 +21,19 @@ export function getBreedName(url: string): string {
 
   return capitalized.join(" ");
 }
+
+export async function fetchData<T>(url: string): Promise<T | null> {
+  try {
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data: T = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Fetch error:", error);
+    return null; // Return null on error
+  }
+}
