@@ -48,6 +48,7 @@ export const Favorites = ({ onSelect }: Props) => {
         <List dense>
           {Array.from(favorites).map((el) => (
             <FavoriteListItem
+              key={el}
               source={el}
               onRemove={() => removeFavorite(el)}
               onSelect={() => onSelect(el)}

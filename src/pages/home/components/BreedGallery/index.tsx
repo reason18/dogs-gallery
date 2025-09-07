@@ -1,4 +1,12 @@
-import { Card, CardHeader, CardMedia, IconButton, Stack } from "@mui/material";
+import {
+  Alert,
+  Card,
+  CardHeader,
+  CardMedia,
+  IconButton,
+  Skeleton,
+  Stack,
+} from "@mui/material";
 import { useMemo } from "react";
 import { useFavorites } from "@context/FavoritesContext";
 import { getBreedName } from "../utils";
@@ -22,6 +30,8 @@ interface Props {
   onSelect: (source: string) => void;
 }
 
+const MediaSize = 386;
+
 export const BreedGallery = ({ selectedBreed, onSelect }: Props) => {
   const { favorites, addFavorite, removeFavorite } = useFavorites();
   const { data: mainBreed, ...mainBreedState } = useApiData<RandomDogResponse>(
@@ -33,8 +43,9 @@ export const BreedGallery = ({ selectedBreed, onSelect }: Props) => {
       "https://dog.ceo/api/breeds/image/random/10"
     );
 
-  const loading = mainBreedState.loading || breedListState.loading;
   const error = mainBreedState.error || breedListState.error;
+  const mainItemLoading = mainBreedState.loading || !!mainBreedState.error;
+  const listItemsLoading = breedListState.loading || !!breedListState.error;
 
   const mainItem = selectedBreed || mainBreed?.message || "";
 
@@ -49,42 +60,57 @@ export const BreedGallery = ({ selectedBreed, onSelect }: Props) => {
 
   return (
     <Card variant="outlined">
-      {loading ? (
-        "Loading..."
-      ) : (
-        <>
-          <CardHeader
-            action={
-              favorites.has(mainItem) ? (
-                <IconButton
-                  onClick={() => removeFavorite(mainItem)}
-                  color="error"
-                >
-                  <FavoriteRemoveIcon />
-                </IconButton>
-              ) : (
-                <IconButton onClick={handleAddClick}>
-                  <FavoriteAddIcon />
-                </IconButton>
-              )
-            }
-            title={breedName}
+      {error && <Alert severity="error">{error}</Alert>}
+      <>
+        <CardHeader
+          action={
+            !mainItemLoading &&
+            (favorites.has(mainItem) ? (
+              <IconButton
+                aria-label="Remove from favorite"
+                onClick={() => removeFavorite(mainItem)}
+                color="error"
+              >
+                <FavoriteRemoveIcon />
+              </IconButton>
+            ) : (
+              <IconButton aria-label="Add to favorite" onClick={handleAddClick}>
+                <FavoriteAddIcon />
+              </IconButton>
+            ))
+          }
+          title={mainItemLoading ? <Skeleton variant="text" /> : breedName}
+        />
+        {mainItemLoading ? (
+          <Skeleton
+            sx={{ height: MediaSize }}
+            animation="wave"
+            variant="rectangular"
           />
+        ) : (
           <CardMedia
             component="img"
-            width={386}
-            height={386}
-            image={`${mainItem}?w=386&h=200&fit=crop&auto=format`}
+            width={MediaSize}
+            height={MediaSize}
+            image={`${mainItem}?w=${MediaSize}&h=200&fit=crop&auto=format`}
             alt={breedName + " image"}
           />
+        )}
 
+        {listItemsLoading ? (
+          <Skeleton
+            sx={{ height: "100px", m: "1rem" }}
+            animation="wave"
+            variant="rectangular"
+          />
+        ) : (
           <Stack direction="row" flexWrap="wrap" gap={1} sx={{ p: 2 }}>
             {breedList?.message.map((el) => (
-              <BreedGalleryItem source={el} onSelect={onSelect} />
+              <BreedGalleryItem key={el} source={el} onSelect={onSelect} />
             ))}
           </Stack>
-        </>
-      )}
+        )}
+      </>
     </Card>
   );
 };

@@ -8,6 +8,7 @@ import {
 import { CloseIcon } from "@icons/Close";
 import { useMemo } from "react";
 import { getBreedName } from "../utils";
+import { ItemImage } from "./styled";
 
 interface Props {
   source: string;
@@ -26,10 +27,10 @@ export const FavoriteListItem = ({ source, onSelect, onRemove }: Props) => {
     <ListItem
       secondaryAction={
         <IconButton
+          aria-label="Remove from favorite"
           onClick={() => onRemove(source)}
           edge="end"
           size="small"
-          aria-label="delete"
         >
           <CloseIcon sx={{ p: "0.2rem" }} />
         </IconButton>
@@ -37,14 +38,11 @@ export const FavoriteListItem = ({ source, onSelect, onRemove }: Props) => {
     >
       <ListItemAvatar>
         <Avatar onClick={() => onSelect(source)}>
-          <img
-            width="64px"
-            height="64px"
-            srcSet={`${source}?w=64&h=auto&fit=crop&auto=format&dpr=2 2x`}
+          <ItemImage
             src={`${source}?w=64&h=auto&fit=crop&auto=format`}
+            srcSet={`${source}?w=64&h=auto&fit=crop&auto=format&dpr=2 2x`}
             alt={breedName}
             loading="lazy"
-            style={{ display: "block", objectFit: "cover" }}
           />
         </Avatar>
       </ListItemAvatar>
