@@ -1,7 +1,7 @@
 import { Box, colors } from "@mui/material";
 import { useState } from "react";
 import { NavBar } from "@components/NavBar";
-import { FavoritesProvider } from "@context/FavoritesContext";
+import { FavoritesProvider } from "@contexts/FavoritesContext";
 import { BreedGallery } from "./components/BreedGallery";
 import { Favorites } from "./components/Favorites";
 

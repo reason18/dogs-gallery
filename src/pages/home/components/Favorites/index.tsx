@@ -1,6 +1,6 @@
 import { Box, Divider, Drawer, List, Stack, Typography } from "@mui/material";
 import { FavoriteRemoveIcon } from "@icons/FavoriteRemove";
-import { useFavorites } from "@context/FavoritesContext";
+import { useFavorites } from "@contexts/FavoritesContext";
 import { FavoriteListItem } from "../FavoritesListItem";
 
 const drawerWidth = 400;
