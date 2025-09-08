@@ -1,69 +1,96 @@
-# React + TypeScript + Vite
+# Dogs Gallery 🐕
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React application for browsing dog breeds and selecting your favorites. Built with modern web technologies for a smooth and interactive user experience.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 🐕 Browse different dog breeds
+- ❤️ Select and mark favorite breeds
+- ⚡ Fast development with Vite
+- 🔧 TypeScript support for better development experience
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **React** (v19.1.1) - Frontend framework
+- **TypeScript** (v5.8.3) - Type safety
+- **Material-UI** (v7.3.2) - Component library and styling
+- **Emotion** - CSS-in-JS styling
+- **Vite** (v7.1.2) - Build tool and dev server
+- **ESLint** - Code linting
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Getting Started
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+### Prerequisites
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- Node.js (version 16 or higher recommended)
+- npm or yarn package manager
+
+### Installation
+
+1. Clone the repository
+```bash
+git clone https://github.com/reason18/dogs-gallery.git
+cd dogs-gallery
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+2. Install dependencies
+```bash
+npm install
 ```
+
+### Development
+
+Start the development server:
+```bash
+npm run dev
+```
+
+The application will be available at `http://localhost:5173`
+
+### Building for Production
+
+Create a production build:
+```bash
+npm run build
+```
+
+Preview the production build:
+```bash
+npm run preview
+```
+
+### Code Quality
+
+Run ESLint to check code quality:
+```bash
+npm run lint
+```
+
+## Project Structure
+
+```
+dogs-gallery/
+├── src/
+│   ├── assets/        # Assets
+│   ├── components/    # React components
+│   ├── contexts/       # React contexts
+│   ├── hooks/         # React hooks
+│   ├── icons/         # Icons
+│   ├── pages/         # App pages
+│   └── App.tsx        # Main application component
+├── public/            # Static assets
+├── package.json       # Project configuration
+└── README.md         # Project documentation
+```
+
+## Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run lint` - Run ESLint
+- `npm run preview` - Preview production build
+
+
+## TODO:
+- add responsiveness
+- save favorites to local storage
