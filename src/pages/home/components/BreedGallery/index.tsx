@@ -8,7 +8,7 @@ import {
   Stack,
 } from "@mui/material";
 import { useMemo } from "react";
-import { useFavorites } from "@context/FavoritesContext";
+import { useFavorites } from "@contexts/FavoritesContext";
 import { getBreedName } from "../utils";
 import { FavoriteAddIcon } from "@icons/FavoriteAdd";
 import { BreedGalleryItem } from "../BreedGalleryItem";
